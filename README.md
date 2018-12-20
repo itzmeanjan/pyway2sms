@@ -97,10 +97,10 @@ Pythonic API for accessing Way2SMS, a programmable SMS sending service in India,
  **25 SMSes can be sent during testing period using test key and test secret, which can be obtained [here](http://www.way2sms.com/).**
  
  
- All responses returned from functions are python dicts. 
+ All responses returned from function calls are python dicts. 
  
  
- There're some other submodules with main module, such as **perform_post_query** and **validate**, which are finally powering up main functionalities provided by [pyway2sms](https://www.github.com/itzmeanjan/pyway2sms/). 
+ There're some other submodules within main module, such as **perform_post_query** and **validate**, which are finally powering up main functionalities provided by [pyway2sms](https://www.github.com/itzmeanjan/pyway2sms/). 
  
  
  **validate** submodule validates user inputs such as, API_KEY, SECRET, USE_TYPE, TARGET_MOBILE_NUMBER( +91 is not required to be added in front of number ), SENDER_ID & DATE (in case of requesting for report of usage of API, from_date and to_date and validated).
