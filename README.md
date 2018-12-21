@@ -108,9 +108,104 @@ Pythonic API for accessing Way2SMS, a programmable SMS sending service in India,
  API_KEY has length of 32 and is of alphanumeric, whereas SECRET is 16 character lengthy and alphanumeric. SENDER_ID is by default 'WAYSMS', can be set to some alphabetic sequence of length 6.
  
  
- Finally thanks to **WAY2SMS**, for providing a great service at such a low price. 
+ ## New Added Feature ::
  
+ 
+  Now, you can use **pyway2sms.mobile** module **to get information about certain Indian Mobile Numbers**. Feature is provided [here](http://www.way2sms.com/Location), using a Web based interface.
+  
+  All I've done is just fetched html page, performing post query and then parsed it using BeautifulSoup, and extracted required information from that page. 
+  
+  This mobile module also exposes an easy to use API, if you need to store fetched records in a local database. It stores records in a local levelDB database, using its python API, **plyvel**. You can also fetch all records or search for a certain record using mobile number stored in local database using **pyway2sms.mobile.fetch_record()** function.
+
+
+ Remember, while passing mobile number you just need to pass a valid Indian Mobile Numbe( without +91 ).
+
+ #### Example Usage of pyway2sms.mobile :
+ 
+ 
+```
+#!/usr/bin/python3
+
+try:
+    from sys import argv
+    from subprocess import run
+    from way2sms.mobile import get_info, store_record, fetch_record
+except ImportError as e:
+    print('[!]Module Unavailable : {}'.format(str(e)))
+    exit(1)
+
+
+def app(db_name='mobile_number_info'):
+    run('clear')
+    if(len(argv) != 2):
+        print('[+]Usage : {0} \'XXXXXXXXXX\' | f\n\nE.g.\t{0} 8945904746\n\t{0} f,\twhere f = fetch i.e. fetches all stored records\n'.format(argv[0]))
+        return
+    arg = argv[1]
+    if(arg.isalpha()):
+        if(arg.lower() != 'f'):
+            print('[!]Bad argument :/')
+            return
+        print('[+]Available records ...\n')
+        for i in fetch_record(db_name):
+            print(i)
+        print('\n')
+        return
+    mobile_num = arg  # mobile number should be 10 digit Indian mobile number
+    print('[+]Finding ...')
+    resp = get_info(mobile_num)  # fetched response
+    if(resp.get('error')):
+        print(resp)
+        print(fetch_record(db_name, mobile=mobile_num))
+        return
+    print(resp)
+    print(store_record(mobile_num, resp, db_name))
+    return
+
+
+if __name__ == '__main__':
+    try:
+        app()
+    except KeyboardInterrupt:
+        print('\n[!]Terminated')
+    finally:
+        exit(0)
+
+```
+
+You can just copy aforementioned code and put it in a file outside **pyway2sms** directory.
+Make it executable using 
+
+```
+  >> chmod +x file_name.py
+```
+Then run it using 
+
+```
+  >> ./file_name.py f # which fetches all records
+  >> ./file_name.py XXXXXXXXXX # fetches available information from Way2SMS and stores them in local database
+```
+
+Before you copy the code and put it in a file, make sure you have cloned this repo using,
+```
+  >> git clone https://www.github.com/itzmeanjan/pyway2sms/
+```
+
+And use python3. I've tested it on Ubuntu, Fedora, Arch and Mint, where it works fine. You need to install plyvel, python API for accessing levelDB using,
+```
+  >> pip3 install plyvel --user
+```
+
+Alright, now I need to tell you something really important before you start using this module and have fun. 
+
+Don't ever use this program for automating your queries, which might lead to unexpected load at Way2SMS servers and you might get banned.
+
+**This program is purely written with no intension of using someone else's private information. I've just created a programmatic way of fetching query result from Way2SMS. This is just for educational purpose. Any data returned is not anyhow guaranteed to be correct. !!!Use at your own risk!!!**
+
+
+ Finally thanks to **WAY2SMS**, for providing such a great service. 
+ 
+
  More info can be found [here](http://www.way2sms.com/).
- 
- 
+
+
  Hope it was helpful :)
