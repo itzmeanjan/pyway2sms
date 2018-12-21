@@ -108,7 +108,7 @@ Pythonic API for accessing Way2SMS, a programmable SMS sending service in India,
  API_KEY has length of 32 and is of alphanumeric, whereas SECRET is 16 character lengthy and alphanumeric. SENDER_ID is by default 'WAYSMS', can be set to some alphabetic sequence of length 6.
  
  
- ## New Added Feature ::
+ ## New Feature Added ::
  
  
   Now, you can use **pyway2sms.mobile** module **to get information about certain Indian Mobile Numbers**. Feature is provided [here](http://www.way2sms.com/Location), using a Web based interface.
